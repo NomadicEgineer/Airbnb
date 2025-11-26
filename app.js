@@ -102,25 +102,25 @@ app.use(authRouter);
 
 
 
-app.use((req,res,next)=>{
-  console.log(req.url,req.method)
-  next();
-})
-
-
 // middleware to protect host routes
 app.use('/host',(req,res,next)=>{
-  if(req.session.isLoggedIn){
+  if(req.session.isLoggedIn && req.session.user.userType==='host'){
     console.log("User is authenticated to access host routes", req.session.isLoggedIn);
     next();
   }else{
     res.redirect('/login');
   }
 })
-
 app.use('/host',hostRouter);
 
-app.use(storeRouter)
+app.use('/store',(req,res,next)=>{
+  if(req.session.isLoggedIn===true && req.session.user.userType==='guest'){
+      next();
+  }else{
+    res.redirect('/login')
+  }
+})
+app.use('/store',storeRouter)
 
 // invalid path handling
 app.use(errorRouter);

@@ -14,10 +14,10 @@
         <% if (isLoggedIn) { %>
 
           <% if (user && user.userType === 'guest') { %>
-          <a href="/homes" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Home List</a>
-          <a href="/favourite-list" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Favourite List</a>
-          <a href="/reserve" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Reserve</a>
-          <a href="/bookings" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Bookings</a>
+          <a href="/store/homes" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Home List</a>
+          <a href="/store/favourite-list" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Favourite List</a>
+          <a href="/store/reserve" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Reserve</a>
+          <a href="/store/bookings" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Bookings</a>
           <% } %>
 
           <% if (user && user.userType === 'host') { %>
@@ -58,10 +58,10 @@
   <div class="sm:hidden hidden transition-all duration-300 ease-in-out" id="mobile-menu">
     <div class="px-2 pt-2 pb-3 space-y-1">
       <% if (isLoggedIn) { %>
-        <a href="/homes" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Home List</a>
-        <a href="/favourite-list" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Favourite List</a>
-        <a href="/reserve" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Reserve</a>
-        <a href="/bookings" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Bookings</a>
+        <a href="/store/homes" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Home List</a>
+        <a href="/store/favourite-list" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Favourite List</a>
+        <a href="/store/reserve" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Reserve</a>
+        <a href="/store/bookings" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Bookings</a>
         <a href="/host/add-home" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Add Home</a>
         <a href="/host/home-list" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Host Home List</a>
         <form action="/logout" method="POST" class="block px-3 py-2">

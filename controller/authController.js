@@ -41,7 +41,7 @@ exports.postLoginPage=async (req,res)=>{
     req.session.user = user; 
     // res.cookie('isLoggedIn', true);
     // req.isLoggedIn = true;
-    res.redirect('/homes');
+    res.redirect('/store/homes');
 
     // if(user.userType==='host'){
     //   res.redirect('/host/home');

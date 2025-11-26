@@ -21,7 +21,7 @@ exports.getHomeDetail=(req,res,next)=>{
     console.log("home obj : ", home)
     if(!home){
       console.log("Home not found")
-      res.status(302).redirect('/homes')
+      res.status(302).redirect('/store/homes')
     }else{
       res.render('store/home-detail',{Home:home,isLoggedIn:req.isLoggedIn,user:req.session.user})
     }
@@ -84,7 +84,7 @@ exports.postFavourites = async (req, res, next) => {
          await user.save();
       }
 
-    res.redirect("/favourite-list");
+    res.redirect("/store/favourite-list");
   } catch (err) {
     console.log(err);
     next(err);
@@ -113,7 +113,7 @@ exports.postDelFav=async (req,res)=>{
   // when ever we get the homeid from req it is in string format
   // but the mongoose db object ids are not in string format so we need to convert them to string format using toString() method
 
-    res.redirect('/favourite-list')
+    res.redirect('/store/favourite-list')
 }
 
 
