@@ -1,0 +1,99 @@
+<nav class="bg-white shadow-md">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="flex justify-between h-16">
+      <!-- Left aligned brand name -->
+      
+              <div class="flex items-center">
+                <div class="flex-shrink-0 flex items-center">
+                   <span class="text-xl font-bold text-red-500"><a href="/">airbnb</a></span>
+                </div>
+              </div>
+      
+      <!-- Right aligned navigation (desktop) -->
+      <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+        <% if (isLoggedIn) { %>
+
+          <% if (user && user.userType === 'guest') { %>
+          <a href="/homes" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Home List</a>
+          <a href="/favourite-list" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Favourite List</a>
+          <a href="/reserve" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Reserve</a>
+          <a href="/bookings" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Bookings</a>
+          <% } %>
+
+          <% if (user && user.userType === 'host') { %>
+          <a href="/host/add-home" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Add Home</a>
+          <a href="/host/home-list" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Host Home List</a>
+          <% } %>
+
+          <form action="/logout" method="POST" class="inline">
+            <button type="submit" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Logout</button>
+          </form>
+
+          
+        <% } else { %>
+          <a href="/login" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Sign In</a>
+          <a href="/signup" class="px-3 py-2 rounded-md text-sm font-medium text-white bg-red-500 hover:bg-red-600 transition-colors duration-200">Sign Up</a>
+        <% } %>
+      </div>
+  
+      
+      <!-- Mobile menu button -->
+      <div class="-mr-2 flex items-center sm:hidden">
+        <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500" aria-expanded="false">
+          <span class="sr-only">Open main menu</span>
+          <!-- Hamburger icon -->
+          <svg class="block h-6 w-6" id="menu-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <!-- Close icon (hidden by default) -->
+          <svg class="hidden h-6 w-6" id="menu-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Mobile menu (hidden by default) -->
+  <div class="sm:hidden hidden transition-all duration-300 ease-in-out" id="mobile-menu">
+    <div class="px-2 pt-2 pb-3 space-y-1">
+      <% if (isLoggedIn) { %>
+        <a href="/homes" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Home List</a>
+        <a href="/favourite-list" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Favourite List</a>
+        <a href="/reserve" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Reserve</a>
+        <a href="/bookings" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Bookings</a>
+        <a href="/host/add-home" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Add Home</a>
+        <a href="/host/home-list" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Host Home List</a>
+        <form action="/logout" method="POST" class="block px-3 py-2">
+          <button type="submit" class="w-full text-left text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Logout</button>
+        </form>
+      <% } else { %>
+        <a href="/login" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Sign In</a>
+        <a href="/signup" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-red-500 hover:bg-red-600 transition-colors duration-200">Sign Up</a>
+      <% } %>
+    </div>
+  </div>
+</nav>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const menuButton = document.getElementById('mobile-menu-button');
+    const mobileMenu = document.getElementById('mobile-menu');
+    const menuOpenIcon = document.getElementById('menu-open');
+    const menuCloseIcon = document.getElementById('menu-close');
+    
+    menuButton.addEventListener('click', function() {
+      const isExpanded = this.getAttribute('aria-expanded') === 'true';
+      
+      // Toggle menu visibility
+      mobileMenu.classList.toggle('hidden');
+      
+      // Toggle icons
+      menuOpenIcon.classList.toggle('hidden');
+      menuCloseIcon.classList.toggle('hidden');
+      
+      // Update aria-expanded attribute
+      this.setAttribute('aria-expanded', !isExpanded);
+    });
+  });
+</script>

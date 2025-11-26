@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Airbnb - Your Bookings</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-50">
+    <!-- Navbar (same as previous) -->
+    <nav class="bg-white shadow-md">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <!-- Left aligned brand name -->
+                <div class="flex items-center">
+                    <div class="flex-shrink-0 flex items-center">
+                        <span class="text-xl font-bold text-red-500">Airbnb</span>
+                    </div>
+                </div>
+                
+                <!-- Right aligned navigation -->
+                <div class="hidden sm:ml-6 sm:flex sm:items-center space-x-4">
+                    <a href="/home-list" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Home List</a>
+                    <a href="/favourite-list" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Favourite List</a>
+                    <a href="/reserve" class="px-3 py-2 rounded-md text-sm font-medium text-gray-700 hover:text-red-500 hover:bg-red-50 transition-colors duration-200">Reserve</a>
+                    <a href="/bookings" class="px-3 py-2 rounded-md text-sm font-medium text-red-500 bg-red-50 transition-colors duration-200">Bookings</a>
+                </div>
+                
+                <!-- Mobile menu button -->
+                <div class="-mr-2 flex items-center sm:hidden">
+                    <button type="button" id="mobile-menu-button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-red-500" aria-expanded="false">
+                        <span class="sr-only">Open main menu</span>
+                        <svg class="block h-6 w-6" id="menu-open" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                        <svg class="hidden h-6 w-6" id="menu-close" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Mobile menu -->
+        <div class="sm:hidden hidden transition-all duration-300 ease-in-out" id="mobile-menu">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <a href="/home-list" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Home List</a>
+                <a href="/favourite-list" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Favourite List</a>
+                <a href="/reserve" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-white hover:bg-red-500 transition-colors duration-200">Reserve</a>
+                <a href="/bookings" class="block px-3 py-2 rounded-md text-base font-medium text-white bg-red-500 transition-colors duration-200">Bookings</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Bookings Page Content -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div class="mb-8">
+            <h1 class="text-3xl font-bold text-gray-900">Your Bookings</h1>
+            <p class="mt-2 text-gray-600">Manage your upcoming and past reservations</p>
+        </div>
+
+        <!-- Tabs -->
+        <div class="border-b border-gray-200">
+            <nav class="-mb-px flex space-x-8">
+                <a href="#" class="border-red-500 text-red-500 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Upcoming</a>
+                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Completed</a>
+                <a href="#" class="border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300 whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">Cancelled</a>
+            </nav>
+        </div>
+
+        <!-- Booking Cards -->
+        <div class="mt-8 space-y-6">
+            <!-- Booking Card 1 -->
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="p-6 sm:flex sm:items-start">
+                    <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         alt="Modern Apartment" 
+                         class="flex-shrink-0 w-full h-48 sm:w-48 sm:h-32 object-cover rounded-lg">
+                    
+                    <div class="mt-4 sm:mt-0 sm:ml-6">
+                        <div class="flex justify-between">
+                            <h3 class="text-lg font-medium text-gray-900">Modern Apartment in Downtown</h3>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
+                                Confirmed
+                            </span>
+                        </div>
+                        <p class="mt-1 text-gray-600">New York, NY</p>
+                        
+                        <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Check-in</p>
+                                <p class="text-sm font-medium text-gray-900">Jun 12, 2023</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Check-out</p>
+                                <p class="text-sm font-medium text-gray-900">Jun 18, 2023</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Guests</p>
+                                <p class="text-sm font-medium text-gray-900">2 adults</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Total</p>
+                                <p class="text-sm font-medium text-gray-900">$1,200</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex space-x-3">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                View details
+                            </button>
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Contact host
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Booking Card 2 -->
+            <div class="bg-white shadow rounded-lg overflow-hidden">
+                <div class="p-6 sm:flex sm:items-start">
+                    <img src="https://images.unsplash.com/photo-1522708323590-d24dbb6b0267?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80" 
+                         alt="Beach House" 
+                         class="flex-shrink-0 w-full h-48 sm:w-48 sm:h-32 object-cover rounded-lg">
+                    
+                    <div class="mt-4 sm:mt-0 sm:ml-6">
+                        <div class="flex justify-between">
+                            <h3 class="text-lg font-medium text-gray-900">Beachfront Villa</h3>
+                            <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-blue-100 text-blue-800">
+                                Pending
+                            </span>
+                        </div>
+                        <p class="mt-1 text-gray-600">Miami, FL</p>
+                        
+                        <div class="mt-4 grid grid-cols-2 gap-4 sm:grid-cols-4">
+                            <div>
+                                <p class="text-sm text-gray-500">Check-in</p>
+                                <p class="text-sm font-medium text-gray-900">Jul 5, 2023</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Check-out</p>
+                                <p class="text-sm font-medium text-gray-900">Jul 12, 2023</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Guests</p>
+                                <p class="text-sm font-medium text-gray-900">4 adults</p>
+                            </div>
+                            <div>
+                                <p class="text-sm text-gray-500">Total</p>
+                                <p class="text-sm font-medium text-gray-900">$2,400</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-6 flex space-x-3">
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-gray-300 shadow-sm text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                View details
+                            </button>
+                            <button type="button" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-500 hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                                Contact host
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const menuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            const menuOpenIcon = document.getElementById('menu-open');
+            const menuCloseIcon = document.getElementById('menu-close');
+            
+            menuButton.addEventListener('click', function() {
+                const isExpanded = this.getAttribute('aria-expanded') === 'true';
+                
+                // Toggle menu visibility
+                mobileMenu.classList.toggle('hidden');
+                
+                // Toggle icons
+                menuOpenIcon.classList.toggle('hidden');
+                menuCloseIcon.classList.toggle('hidden');
+                
+                // Update aria-expanded attribute
+                this.setAttribute('aria-expanded', !isExpanded);
+            });
+        });
+    </script>
+</body>
+</html>

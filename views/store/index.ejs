@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome To AirBnb</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#ef4444', // red-500
+                        light: '#f9fafb',   // gray-50
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gray-50">
+    <%- include('../partials/navbar' , { isLoggedIn } ) %>
+
+    <!-- Main Content Container -->
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Page Heading -->
+        <h1 class="text-2xl font-bold text-gray-800 mb-8">Available Homes</h1>
+        
+        <!-- Homes Grid -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+            <% registeredHomes.forEach((home)=>{ %>
+                <!-- Home Card -->
+                <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-lg transition-shadow duration-300">
+                    <!-- Image -->
+                    <div class="h-48 overflow-hidden">
+                        <img 
+                            src="<%= home.image %>"
+                            alt="<%= home.housename %>"
+                            class="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
+                            onerror="this.src='https://media.istockphoto.com/id/909423306/photo/modern-multilevel-house-exterior-with-pool.jpg?s=2048x2048&w=is&k=20&c=-u5KF-cmC4bD8xI-R-XYVO5glHMwweEBPLgdGiSHsdI='"
+                        >
+                    </div>
+                    
+                    <!-- Details -->
+                    <div class="p-4">
+                        <div class="flex justify-between items-start mb-2">
+                            <h3 class="text-lg font-semibold text-gray-800 truncate"><%= home.housename %></h3>
+                            <p class="text-primary font-bold">$<%= home.price %><span class="text-gray-500 text-sm font-normal">/night</span></p>
+                        </div>
+                        
+                        <div class="flex items-center text-gray-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                            </svg>
+                            <span class="text-sm"><%= home.location %></span>
+                        </div>
+                    </div>
+                </div>
+            <% }) %>
+        </div>
+
+        <!-- Empty State -->
+        <% if (registeredHomes.length === 0) { %>
+            <div class="text-center py-12">
+                <div class="mx-auto h-24 w-24 text-gray-400 mb-4">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                    </svg>
+                </div>
+                <h3 class="text-lg font-medium text-gray-900">No homes available</h3>
+                <p class="mt-1 text-sm text-gray-500">Be the first to register your home!</p>
+                <div class="mt-6">
+                    <a href="/host/add-home" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-primary hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                        Register a Home
+                    </a>
+                </div>
+            </div>
+        <% } %>
+    </div>
+
+    <script>
+        // Toggle mobile menu
+        document.getElementById('mobile-menu-button').addEventListener('click', function() {
+            const mobileMenu = document.getElementById('mobile-menu');
+            if (mobileMenu.style.display === "none" || mobileMenu.style.display === "") {
+                mobileMenu.style.display = "block";
+            } else {
+                mobileMenu.style.display = "none";
+            }
+        });
+    </script>
+</body>
+</html>
