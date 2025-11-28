@@ -121,15 +121,21 @@ exports.postEditHome=(req,res,next)=>{
 }
 
 // delete home 
-exports.postDeleteHome = (req, res, next) => {
+exports.postDeleteHome = async (req, res, next) => {
   const homeId = req.params.homeId;
-  console.log("inside delete method", homeId);
-  Home.findByIdAndDelete(homeId).then(() => {
-    console.log("Home Deleted");
-    res.redirect('/host/home-list');
-  }).catch(err => console.log("Error while deleting home:", err));
+  const getHome = await Home.findById(homeId);
 
+  // deleting the files related to home before deleting the home 
+  fs.unlink(getHome.image,(err)=>{
+      if(err) console.log(err)
+  })
+  fs.unlink(getHome.pdf, (err)=>{
+    if(err) console.log(err)
+  })
+
+  await getHome.deleteOne();
   res.redirect('/host/home-list');
+
 };
 
 
