@@ -6,10 +6,16 @@ const user = new mongoose.Schema({
   password: { type: String, required: true },
   userType: { type: String, enum: ['host', 'guest'], required: true },
     favourites:
-      [{
-          type: mongoose.Schema.Types.ObjectId,
-          ref: 'Home'
-      }]
+      {
+          type: [mongoose.Schema.Types.ObjectId],
+          ref: 'Home',
+          default: []
+      },
+    hostedHomes:{
+       type : [mongoose.Schema.Types.ObjectId],
+       ref: 'Home',
+       default: []
+    }
 })
 
 module.exports = mongoose.model('User', user);

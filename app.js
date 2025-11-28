@@ -92,20 +92,18 @@ app.use((req,res,next)=>{
   //  console.log("Cookie " , req.get('Cookie').split('=')[1]);
    const isLoggedIn =req.session.isLoggedIn || false;
     req.isLoggedIn = isLoggedIn;
-    console.log("session object :", req.session)
    next();
 });
 
 // check auth of user
 app.use(authRouter);
 
-
+console.log("after the authRoutes")
 
 
 // middleware to protect host routes
 app.use('/host',(req,res,next)=>{
   if(req.session.isLoggedIn && req.session.user.userType==='host'){
-    console.log("User is authenticated to access host routes", req.session.isLoggedIn);
     next();
   }else{
     res.redirect('/login');
@@ -113,8 +111,9 @@ app.use('/host',(req,res,next)=>{
 })
 app.use('/host',hostRouter);
 
+
 app.use('/store',(req,res,next)=>{
-  if(req.session.isLoggedIn===true && req.session.user.userType==='guest'){
+  if(req.session.isLoggedIn && req.session.user.userType==='guest'){
       next();
   }else{
     res.redirect('/login')

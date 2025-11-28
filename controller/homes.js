@@ -1,16 +1,20 @@
 
 const {Home}= require('../model/homeModel')
+const userModel = require('../model/userModel')
 const fs = require('fs')
 const rootDir = require('../util/mainPath');
 
 
 // fetch all homes here 
-exports.getHostHomeList=(req,res,next)=>{
-    Home.find().then((arrHome)=>{
-      console.log("Host-home-list fetched !" , arrHome)
-      res.render('host/host-home-list' , {registeredHomes:arrHome,isLoggedIn:req.isLoggedIn,user:req.session.user} )
+exports.getHostHomeList=async (req,res,next)=>{
+  const sessionUser=req.session.user;
+   const getUser = await userModel.findById(sessionUser._id)
+   const entireUser =await  getUser.populate('hostedHomes')
+    res.render('host/host-home-list',{
+      isLoggedIn:req.session.isLoggedIn,
+      user:req.session.user,
+      registeredHomes:entireUser.hostedHomes
     })
-    .catch( err => console.log("error while fetching data " , err))
 }
 
 exports.getAddHome=(req,res,next)=>{
@@ -23,7 +27,7 @@ exports.getAddHome=(req,res,next)=>{
     })
 }
 
-exports.postAddHome=(req,res,next)=>{
+exports.postAddHome=async (req,res,next)=>{
   const {housename,location,price,description} = req.body;
 
   const obj = new Home({ 
@@ -47,9 +51,18 @@ exports.postAddHome=(req,res,next)=>{
     obj.image = req.files.image[0].path; // get the path of uploaded file
   }
 
-  obj.save().then(()=>{
+  const savedHome = await obj.save();
+  const sessionUser = req.session.user._id;
+  const getuser = await userModel.findById(sessionUser)
+
+  if(getuser.hostedHomes.some(id => id.toString()===savedHome._id.toString())){
     res.redirect('/host/home-list')
-  }).catch( err => console.log("error while svaing is " , err));
+  }else{
+    getuser.hostedHomes.push(savedHome._id)
+  }
+
+  await getuser.save();
+  res.redirect('/host/home-list')
 }
 
 exports.getEditHome=(req,res,next)=>{

@@ -39,15 +39,11 @@ exports.postLoginPage=async (req,res)=>{
 
     req.session.isLoggedIn = true;
     req.session.user = user; 
-    // res.cookie('isLoggedIn', true);
-    // req.isLoggedIn = true;
-    res.redirect('/store/homes');
 
-    // if(user.userType==='host'){
-    //   res.redirect('/host/home');
-    // }else{
-    //   res.redirect('/homes');
-    // }
+    if(req.session.user.userType==='guest')    res.redirect('/store/homes');
+    else res.redirect('/host/home-list')
+
+
 }
 
 exports.postLogout=(req,res)=>{
