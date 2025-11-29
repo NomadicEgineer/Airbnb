@@ -11,6 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@supabase/supabase-js": "^2.86.0",
     "@tailwindcss/cli": "^4.1.11",
     "bcryptjs": "^3.0.3",
     "connect-mongodb-session": "^5.0.0",

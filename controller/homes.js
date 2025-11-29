@@ -3,7 +3,19 @@ const {Home}= require('../model/homeModel')
 const userModel = require('../model/userModel')
 const fs = require('fs')
 const rootDir = require('../util/mainPath');
+const { createClient } = require('@supabase/supabase-js');
 
+
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
+
+const randomString = (length)=>{
+  let result = '';
+  let characters = 'abcdefghijklmnopqrstuvwxyz';
+  for ( var i = 0; i < length; i++ ) {
+    result += characters.charAt(Math.floor(Math.random() * characters.length));
+  } 
+  return result;
+}
 
 // fetch all homes here 
 exports.getHostHomeList=async (req,res,next)=>{
@@ -28,27 +40,52 @@ exports.getAddHome=(req,res,next)=>{
 }
 
 exports.postAddHome=async (req,res,next)=>{
+
   const {housename,location,price,description} = req.body;
 
   const obj = new Home({ 
     housename:housename,
     location:location,
-    // image:imagePath,
-    // pdf:pdfPath,
     price:price,
     description:description
   })
 
+  const userId=req.session.user._id
+
   if(req.files.pdf.length===0){
     return res.status(422).redirect('/host/home-list');  
   }else{
-    obj.pdf = req.files.pdf[0].path; // get the path of uploaded file
+
+    const bucket='rulebook'
+    const fileName = `${randomString(10)}-${req.files.pdf[0].originalname}`
+    const path = `${userId}/${fileName}`
+
+    await supabase.storage.from(bucket).upload(path, req.files.pdf[0].buffer, {
+        contentType: req.files.pdf[0].mimetype,
+        upsert: false
+      });
+
+    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    obj.pdf=data.publicUrl
+
   }
   
   if(req.files.image.length===0){
     return res.status(422).redirect('/host/home-list');
   }else{
-    obj.image = req.files.image[0].path; // get the path of uploaded file
+    
+    const bucket='images'
+    const fileName = `${randomString(10)}-${req.files.image[0].originalname}`
+    const path = `${userId}/${fileName}`
+
+    await supabase.storage.from(bucket).upload(path,req.files.image[0].buffer,{
+        contentType: req.files.image[0].mimetype,
+        upsert: false
+    })
+
+    const { data } = supabase.storage.from(bucket).getPublicUrl(path);
+    obj.image=data.publicUrl
+
   }
 
   const savedHome = await obj.save();
@@ -63,6 +100,7 @@ exports.postAddHome=async (req,res,next)=>{
 
   await getuser.save();
   res.redirect('/host/home-list')
+  
 }
 
 exports.getEditHome=(req,res,next)=>{
@@ -74,7 +112,6 @@ exports.getEditHome=(req,res,next)=>{
         if(arrHome){
         console.log(id,editing,arrHome)
         res.render('host/edit-home' ,{
-        // home:home[0],
         home:arrHome,
         pageTitle:"Edit Home",
         currentPage:"Home",
@@ -88,12 +125,13 @@ exports.getEditHome=(req,res,next)=>{
 }
 
 // update the exsisting home 
-exports.postEditHome=(req,res,next)=>{
+exports.postEditHome=async (req,res)=>{
 
   const {homeId,housename,location,image,price,description} = req.body;
   console.log(req.body)
 
-  Home.findById(homeId).then((home)=>{ 
+
+  const home = Home.findById(homeId)
       home.housename=housename;
       home.location=location;
       home.price=price;
@@ -102,36 +140,38 @@ exports.postEditHome=(req,res,next)=>{
       const imagePath =home.image
       const pdfPath = home.pdf
 
-      console.log("home path and pdf path : ", imagePath, pdfPath)
+      await supabase.storage.from('images').upload(imagePath,req.files.image[0].buffer,{
+              contentType: req.files.image[0].mimetype,
+              upsert: true
+      })
 
-     if(req.files.image[0] && req.files.pdf[0]){
-          fs.unlink(imagePath,(err)=>{
-            if(err)  console.log(err)
-          })
-          fs.unlink(pdfPath,(err)=>{
-              if(err)  console.log(err)
-            })
-        home.image=req.files.image[0].path;
-        home.pdf=req.files.pdf[0].path;
-     }
+      await supabase.storage.from('rulebook').upload(pdfPath,req.files.pdf[0].buffer,{
+              contentType: req.files.pdf[0].mimetype,
+              upsert: true
+      })
+
+      const imageObj = supabase.storage.from('images').getPublicUrl(imagePath);
+      home.image=imageObj.data.publicUrl
+
+      const pdfObj = supabase.storage.from('rulebook').getPublicUrl(pdfPath);
+      home.image=pdfObj.data.publicUrl
 
       home.save();
       res.redirect('/host/home-list')
-  } ).catch( err => console.log("error while updating is " , err));
-}
+  } 
+
+
 
 // delete home 
 exports.postDeleteHome = async (req, res, next) => {
   const homeId = req.params.homeId;
   const getHome = await Home.findById(homeId);
 
-  // deleting the files related to home before deleting the home 
-  fs.unlink(getHome.image,(err)=>{
-      if(err) console.log(err)
-  })
-  fs.unlink(getHome.pdf, (err)=>{
-    if(err) console.log(err)
-  })
+  const imagePath = getHome.image.split("/object/public/images/").pop();
+  const pdfPath = getHome.pdf.split("/object/public/rulebook/").pop();
+
+  const imageDelete = await supabase.storage.from("images").remove([imagePath])
+  const pdfDelete = await supabase.storage.from("rulebook").remove([pdfPath])
 
   await getHome.deleteOne();
   res.redirect('/host/home-list');
