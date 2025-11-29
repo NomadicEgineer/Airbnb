@@ -43,7 +43,6 @@ exports.postLoginPage=async (req,res)=>{
     if(req.session.user.userType==='guest')    res.redirect('/store/homes');
     else res.redirect('/host/home-list')
 
-
 }
 
 exports.postLogout=(req,res)=>{

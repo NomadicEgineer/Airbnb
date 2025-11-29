@@ -4,8 +4,6 @@ const userModel = require('../model/userModel')
 const fs = require('fs')
 const rootDir = require('../util/mainPath');
 const { createClient } = require('@supabase/supabase-js');
-
-
 const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
 
 const randomString = (length)=>{

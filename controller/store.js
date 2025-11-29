@@ -6,6 +6,8 @@ const userModel = require('../model/userModel');
 const path = require('path');
 const rootDir = require('../util/mainPath');
 const fs = require('fs');
+const { createClient } = require('@supabase/supabase-js');
+const supabase = createClient(process.env.SUPABASE_URL, process.env.SUPABASE_KEY)
 
 
 
@@ -119,11 +121,24 @@ exports.postDelFav=async (req,res)=>{
 
 exports.downloadRulesFile=async (req,res)=>{
     const getHome =await Home.findById(req.params.filename)
-    console.log("user login value " , req.session.isLoggedIn)
 
     if(!req.session.isLoggedIn){ 
        return res.status(403).redirect('/login');
     }
-    const housePath = path.join(rootDir, getHome.pdf);
-    res.download(housePath);
+
+    const pdfUrl = getHome.pdf;
+    const pdfPath = pdfUrl.split(`/object/public/rulebook/`).pop()
+    const bucket = 'rulebook'
+
+    const{data, err} = await supabase.storage.from(bucket).download(pdfPath)
+
+    // Convert to Buffer
+    const buffer = Buffer.from(await data.arrayBuffer());
+
+    if(err) console.log(err)
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", `attachment; filename=${pdfPath}`);
+
+    res.send(buffer);
 }
